@@ -165,6 +165,15 @@ class Form(QWidget, form_class):
 
         self.display(self.stack[-1])
 
+    def closeEvent(self, QCloseEvent):
+        # 창 닫기
+        ans = QMessageBox.question(self, '종료하기', '종료하시겠습니까?',
+                                   QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
+        if ans == QMessageBox.Yes:
+            QCloseEvent.accept()
+        else:
+            QCloseEvent.ignore()
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
