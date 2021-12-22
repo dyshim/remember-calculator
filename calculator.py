@@ -50,6 +50,8 @@ class Form(QWidget, form_class):
         self.lbl_expr.clear()
         self.lbl_display.setText("0")
 
+        self.display(self.stack[-1])
+
     def inputNumber(self, v):
         # 입력값 처리 -> 최대 11자리까지 입력 가능. (소수점 포함)
         lbl = self.lbl_display
@@ -137,18 +139,18 @@ class Form(QWidget, form_class):
     def backDelete(self):
         # Backspace 처리
         display = self.lbl_display
-        print(self.inputOK)
 
         if self.inputOK:
             if len(display.text()) == 1:
                 self.stack[-1] = 0
             else:
                 self.stack[-1] = display.text()[:-1]
+
+            self.display(self.stack[-1])
+
         else:
             if display.text() == "inf":
                 self.reset()
-
-        self.display(self.stack[-1])
 
         if not self.mathExpr:
             self.lbl_expr.clear()
