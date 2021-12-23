@@ -29,6 +29,9 @@
   ![calc-ui-5](https://user-images.githubusercontent.com/69224744/147278879-d316b47b-c655-4957-9813-2ff2d09b9445.png)
 
 
+## 개선 사항
+- 부동 소수점 입력 시, 지수 형태로 출력
+- 음수 입력 기능 추가
 
 
 
