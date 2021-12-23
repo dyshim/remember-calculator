@@ -4,8 +4,8 @@
 ### Build a calculator using PyQt5 in Python.
 - 실행 화면
 
-화면 ① <img src="https://user-images.githubusercontent.com/69224744/147195303-32c93610-1383-43d3-b6ef-049bd447ec00.png" /> &nbsp;
-화면 ② <img src="https://user-images.githubusercontent.com/69224744/147196556-4cb33e8c-3ee0-494d-a297-cfb9adbf7ec5.png" />
+① <img src="https://user-images.githubusercontent.com/69224744/147195303-32c93610-1383-43d3-b6ef-049bd447ec00.png" /> &nbsp;
+② <img src="https://user-images.githubusercontent.com/69224744/147196556-4cb33e8c-3ee0-494d-a297-cfb9adbf7ec5.png" />
 
 - [실행 파일(.exe) 다운](https://drive.google.com/drive/folders/1vZghImyiCG-NkEmZGmCOKZh0WyjPHCXP?usp=sharing)
 
