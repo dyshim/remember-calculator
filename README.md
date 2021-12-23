@@ -2,7 +2,7 @@
 <img src="https://img.shields.io/badge/PYTHON3-3776AB?style=for-the-badge&logo=PYTHON&logoColor=white"> <img src="https://img.shields.io/badge/Anaconda-44A833?style=for-the-badge&logo=Anaconda&logoColor=white">
 
 ### Build a calculator using PyQt5 in Python.
-- 실행 화면
+- 화면 UI
 
 ① <img src="https://user-images.githubusercontent.com/69224744/147195303-32c93610-1383-43d3-b6ef-049bd447ec00.png" /> &nbsp;
 ② <img src="https://user-images.githubusercontent.com/69224744/147196556-4cb33e8c-3ee0-494d-a297-cfb9adbf7ec5.png" />
