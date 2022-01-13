@@ -27,19 +27,16 @@
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>img/icon.ico</normaloff>img/icon.ico</iconset>
+    <normaloff>icon/icon.ico</normaloff>icon/icon.ico</iconset>
   </property>
-  <layout class="QGridLayout" name="gridLayout_2">
+  <layout class="QVBoxLayout" name="verticalLayout">
    <property name="leftMargin">
     <number>9</number>
    </property>
    <property name="topMargin">
     <number>9</number>
    </property>
-   <property name="horizontalSpacing">
-    <number>6</number>
-   </property>
-   <item row="1" column="0">
+   <item>
     <widget class="QLabel" name="lbl_expr">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
@@ -81,7 +78,7 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="0">
+   <item>
     <widget class="QLabel" name="lbl_display">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
@@ -117,7 +114,7 @@
      </property>
     </widget>
    </item>
-   <item row="6" column="0">
+   <item>
     <layout class="QGridLayout" name="gridLayout">
      <property name="sizeConstraint">
       <enum>QLayout::SetDefaultConstraint</enum>

@@ -1,3 +1,4 @@
+import re
 import sys
 from PyQt5.QtWidgets import *
 from PyQt5 import uic
@@ -73,6 +74,14 @@ class Form(QWidget, form_class):
         # 화면 출력
         self.lbl_display.setText(str(texts))
         self.lbl_expr.setText(" ".join(str(i) for i in self.mathExpr))
+
+    def insertComma(self, str_v):
+        # 3자리 마다 콤마(,) 삽입
+        regex = r'(?<=\d)(?=(\d{3})+(?!\d))'
+        if '.' in str_v:
+            return self.insertComma(str_v[:str_v.find('.')]) + str_v[str_v.find('.'):]
+        else:
+            return re.sub(regex, ',', str_v)
 
     def inputDecimalPoint(self):
         lbl = self.lbl_display
