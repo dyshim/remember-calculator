@@ -9,9 +9,9 @@ form_class = uic.loadUiType('./calculator.ui')[0]  # UI 파일(XML)을 파이썬
 
 
 def typeCasting(obj):
-    if isinstance(obj, float):
-        if obj == int(obj):
-            return int(obj)
+    if obj == int(obj):
+        return int(obj)
+
     return obj
 
 
@@ -51,29 +51,31 @@ class Form(QWidget, form_class):
         self.lbl_expr.clear()
         self.lbl_display.setText("0")
 
-        self.display(self.stack[-1])
+        self.display(str(self.stack[-1]))
 
     def inputNumber(self, v):
         # 입력값 처리 -> 최대 11자리까지 입력 가능. (소수점 포함)
         lbl = self.lbl_display
+        text = lbl.text().replace(",", "")
 
-        if lbl.text() == "inf":
+        if text == "inf":
             self.reset()
 
-        if not self.inputOK or lbl.text() == "0":
+        if not self.inputOK or text == "0":
             self.inputOK = True
-            self.display(str(v))
+            text = ""
 
-        else:
-            if len(lbl.text()) < 10:
-                self.display(lbl.text() + str(v))
+        if self.inputOK:
+            if len(text) < 10:
+                self.display(text + str(v))
 
-        self.stack[-1] = eval(lbl.text())
-
-    def display(self, texts):
-        # 화면 출력
-        self.lbl_display.setText(str(texts))
+    def display(self, text):
+        # 화면에 결과 출력
+        self.lbl_display.setText(self.insertComma(text))
         self.lbl_expr.setText(" ".join(str(i) for i in self.mathExpr))
+
+        if text != "inf":
+            self.stack[-1] = eval(text)
 
     def insertComma(self, str_v):
         # 3자리 마다 콤마(,) 삽입
@@ -84,19 +86,20 @@ class Form(QWidget, form_class):
             return re.sub(regex, ',', str_v)
 
     def inputDecimalPoint(self):
-        lbl = self.lbl_display
         if not self.inputOK:
             self.inputOK = True
             self.stack[-1] = 0
 
         if '.' not in str(self.stack[-1]):
-            self.display(str(self.stack[-1]) + self.sender().text())
+            self.display(str(self.stack[-1]) + ".")
 
-        self.stack[-1] = eval(lbl.text())
+    def getDisplayValue(self):
+        return typeCasting(eval(self.lbl_display.text().replace(",", "")))
 
     def operation(self, op):
         # 연산자 처리
-        self.stack[-1] = typeCasting(float(self.lbl_display.text()))
+        self.stack[-1] = self.getDisplayValue()
+        # print(f"Stack state {self.stack} \nCurrent stack value type {type(self.stack[-1])}")
 
         if self.inputOK:
             self.inputOK = False
@@ -105,13 +108,14 @@ class Form(QWidget, form_class):
 
         self.current_op = op
         self.mathExpr = [self.stack[0], self.sender().text()]
-        self.display(self.stack[-1])
+
+        self.display(str(self.stack[-1]))
 
         if len(self.stack) < 2:
             self.stack.append(0)
 
     def equals(self):
-        self.stack[-1] = typeCasting(float(self.lbl_display.text()))
+        self.stack[-1] = self.getDisplayValue()
         self.mathExpr += [self.stack[-1], "="]
 
         if self.current_op:
@@ -124,10 +128,9 @@ class Form(QWidget, form_class):
             except ZeroDivisionError:
                 print("ZeroDivisionError")
                 self.stack[-1] = float("inf")
-                self.lbl_display.setText(str(self.stack[-1]))
                 self.switchButtonState(False)
 
-        self.display(self.stack[-1])
+        self.display(str(self.stack[-1]))
 
         self.mathExpr.append(self.stack[-1])
         self.history.append(self.mathExpr.copy())
@@ -147,18 +150,16 @@ class Form(QWidget, form_class):
 
     def backDelete(self):
         # Backspace 처리
-        display = self.lbl_display
+        lbl = self.lbl_display
+        text = lbl.text().replace(",", "")
 
         if self.inputOK:
-            if len(display.text()) == 1:
-                self.stack[-1] = 0
+            if len(lbl.text()) == 1:
+                self.display("0")
             else:
-                self.stack[-1] = display.text()[:-1]
-
-            self.display(self.stack[-1])
-
+                self.display(text[:-1])
         else:
-            if display.text() == "inf":
+            if text == "inf":
                 self.reset()
 
         if not self.mathExpr:
@@ -174,7 +175,7 @@ class Form(QWidget, form_class):
         if self.lbl_display.text() == "inf":
             self.reset()
 
-        self.display(self.stack[-1])
+        self.display(str(self.stack[-1]))
 
     def closeEvent(self, QCloseEvent):
         # 창 닫기
