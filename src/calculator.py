@@ -8,11 +8,11 @@ import operator
 form_class = uic.loadUiType('./calculator.ui')[0]  # UI 파일(XML)을 파이썬 코드로 불러오기
 
 
-def typeCasting(obj):
-    if obj == int(obj):
-        return int(obj)
+def numberTypeCasting(num):
+    if float(num) == int(num):
+        return int(num)
 
-    return obj
+    return float(num)
 
 
 class Form(QWidget, form_class):
@@ -22,7 +22,7 @@ class Form(QWidget, form_class):
 
         # Setup numbers
         for n in range(0, 10):
-            getattr(self, 'btn_%s' % n).pressed.connect(lambda v=n: self.inputNumber(v))
+            getattr(self, 'btn_%s' % n).pressed.connect(lambda v=n: self.inputNumberValue(v))
 
         self.btn_point.pressed.connect(self.inputDecimalPoint)
 
@@ -42,19 +42,16 @@ class Form(QWidget, form_class):
         self.history = list()
 
     def reset(self):
-        self.switchButtonState(True)
-        self.inputOK = False  # 숫자 입력 상태 Flag.
+        self.buttonStatSwitch(True)
+        self.inputOK = False  # 입력 상태 확인 flag
         self.current_op = None
         self.stack = [0]
-        self.mathExpr = list()  # 수식 표현 리스트
-
-        self.lbl_expr.clear()
-        self.lbl_display.setText("0")
+        self.math_expr = list()  # 수식을 담을 리스트
 
         self.display(str(self.stack[-1]))
 
-    def inputNumber(self, v):
-        # 입력값 처리 -> 최대 11자리까지 입력 가능. (소수점 포함)
+    def inputNumberValue(self, v):
+        # 입력 값 처리 함수 -> 최대 11자리까지 입력 가능. (소수점 포함)
         lbl = self.lbl_display
         text = lbl.text().replace(",", "")
 
@@ -72,7 +69,7 @@ class Form(QWidget, form_class):
     def display(self, text):
         # 화면에 결과 출력
         self.lbl_display.setText(self.insertComma(text))
-        self.lbl_expr.setText(" ".join(str(i) for i in self.mathExpr))
+        self.lbl_expr.setText(" ".join(str(v) for v in self.math_expr))
 
         if text != "inf":
             self.stack[-1] = eval(text)
@@ -94,7 +91,7 @@ class Form(QWidget, form_class):
             self.display(str(self.stack[-1]) + ".")
 
     def getDisplayValue(self):
-        return typeCasting(eval(self.lbl_display.text().replace(",", "")))
+        return numberTypeCasting(eval(self.lbl_display.text().replace(",", "")))
 
     def operation(self, op):
         # 연산자 처리
@@ -107,7 +104,7 @@ class Form(QWidget, form_class):
                 self.equals()
 
         self.current_op = op
-        self.mathExpr = [self.stack[0], self.sender().text()]
+        self.math_expr = [self.stack[0], self.sender().text()]
 
         self.display(str(self.stack[-1]))
 
@@ -116,31 +113,33 @@ class Form(QWidget, form_class):
 
     def equals(self):
         self.stack[-1] = self.getDisplayValue()
-        self.mathExpr += [self.stack[-1], "="]
+        self.math_expr += [self.stack[-1], "="]
 
         if self.current_op:
+            print(f"===='{self.math_expr[1]}' 연산 START! ====")
             try:
-                print(f"==== 연산 START! ====")
                 result = self.current_op(*self.stack)
-                print(f"{self.stack} \n"
-                      f"연산 결과: {round(result, 8)}")
-                self.stack = [typeCasting(round(result, 8))]
-            except ZeroDivisionError:
-                print("ZeroDivisionError")
-                self.stack[-1] = float("inf")
-                self.switchButtonState(False)
+                print(f"Stack: {self.stack} \n"
+                      f"연산 결과: {round(result, 8)} \n")
+                self.stack = [numberTypeCasting(round(result, 8))]
+            except Exception as e:
+                if ZeroDivisionError:
+                    self.stack[-1] = float("inf")
+
+                self.buttonStatSwitch(False)
+                print(f"Error: {e}")
 
         self.display(str(self.stack[-1]))
 
-        self.mathExpr.append(self.stack[-1])
-        self.history.append(self.mathExpr.copy())
+        self.math_expr.append(self.stack[-1])
+        self.history.append(self.math_expr.copy())
         print(f"3 Recent Records History: {self.history[::-1][:3]}")
 
         self.inputOK = False
         self.current_op = None
-        self.mathExpr.clear()
+        self.math_expr.clear()
 
-    def switchButtonState(self, stat):
+    def buttonStatSwitch(self, stat):
         # Infinity 입력 시 버튼 상태 변경
         buttons = ['add', 'sub', 'mul',
                    'div', 'point', 'equals']
@@ -162,20 +161,14 @@ class Form(QWidget, form_class):
             if text == "inf":
                 self.reset()
 
-        if not self.mathExpr:
+        if not self.math_expr:
             self.lbl_expr.clear()
 
     def clear(self):
-        self.switchButtonState(True)
-        self.stack[-1] = 0
-
-        if not self.mathExpr:
-            self.lbl_expr.clear()
-
         if self.lbl_display.text() == "inf":
             self.reset()
 
-        self.display(str(self.stack[-1]))
+        self.display("0")
 
     def closeEvent(self, QCloseEvent):
         # 창 닫기
