@@ -1,5 +1,8 @@
 # PyQt Calculator
-<img src="https://img.shields.io/badge/PYTHON3-3776AB?style=for-the-badge&logo=PYTHON&logoColor=white"> <img src="https://img.shields.io/badge/Anaconda-44A833?style=for-the-badge&logo=Anaconda&logoColor=white">
+<a href="https://www.python.org"><img
+ src="https://img.shields.io/badge/PYTHON3+-3776AB?style=for-the-badge&logo=PYTHON&logoColor=white&link=https://www.python.org/"></a>
+<a href="https://www.anaconda.com"><img src="https://img.shields.io/badge/Anaconda-44A833?style=for-the-badge&logo=Anaconda&logoColor=white&link=https://www.anaconda.com/"></a>
+
 
 ### Build a calculator using PyQt5 in Python.
 - 화면 UI
