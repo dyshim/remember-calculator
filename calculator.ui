@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+   <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
@@ -37,7 +37,7 @@
     <number>9</number>
    </property>
    <item>
-    <widget class="QLabel" name="lbl_expr">
+    <widget class="QLabel" name="lbl_text">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
        <horstretch>0</horstretch>
@@ -79,9 +79,9 @@
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="lbl_display">
+    <widget class="QLabel" name="lbl_result">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
@@ -102,6 +102,12 @@
      </property>
      <property name="frameShape">
       <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="lineWidth">
+      <number>0</number>
+     </property>
+     <property name="midLineWidth">
+      <number>0</number>
      </property>
      <property name="text">
       <string>0</string>
@@ -504,7 +510,7 @@
       </widget>
      </item>
      <item row="5" column="3" colspan="2">
-      <widget class="QPushButton" name="btn_equals">
+      <widget class="QPushButton" name="btn_equal">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
          <horstretch>0</horstretch>
@@ -523,7 +529,7 @@
         <string>enter</string>
        </property>
        <property name="text">
-        <string>＝</string>
+        <string>=</string>
        </property>
        <property name="shortcut">
         <string>Enter</string>
@@ -558,7 +564,7 @@
       </widget>
      </item>
      <item row="0" column="3">
-      <widget class="QPushButton" name="btn_back">
+      <widget class="QPushButton" name="btn_del">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
          <horstretch>0</horstretch>
