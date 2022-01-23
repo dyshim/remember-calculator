@@ -1,8 +1,11 @@
 import re
 import sys
+
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import *
-from PyQt5 import uic
-from mylib import float_to_int
+from PyQt5 import uic, QtGui
+from mylib import float_to_int, export_history
 
 import operator
 
@@ -37,6 +40,12 @@ class Form(QWidget, form_class):
         self.btn_reset.pressed.connect(self.reset)
         self.btn_point.pressed.connect(self.setInputDecimalPoint)
 
+        # Change the state of the clicked item -> No selected
+        self.listWidget.itemSelectionChanged.connect(lambda: self.listWidget.currentItem().setSelected(False))
+        self.listWidget.itemClicked.connect(self.read_item)
+        self.btn_remove.pressed.connect(self.clear_history)
+        self.btn_save.clicked.connect(lambda: export_history(self.history[::-1]))
+
     def reset(self):
         # AC 버튼을 눌렀을 때
         self.buttonStatSwitch(True)
@@ -45,7 +54,7 @@ class Form(QWidget, form_class):
         self.stack = [0]
         self.math_exp = list()  # 수식을 담을 리스트
 
-        self.display(str(self.stack[-1]))
+        self.display(str(self.stack[-1]), " ".join(str(v) for v in self.math_exp))
 
     def setInputNumberValue(self):
         # 숫자 버튼을 입력했을 때
@@ -61,12 +70,12 @@ class Form(QWidget, form_class):
         if self.inputOK:
             # 최대 11자리까지 입력 가능 (소수점 포함)
             if len(text) < 10:
-                self.display(text + self.sender().text())
+                self.display(text + self.sender().text(), " ".join(str(v) for v in self.math_exp))
 
-    def display(self, text):
+    def display(self, text, math_exp):
         # 입력한 값 화면에 출력
         self.lbl_result.setText(str(self.getInsertCommaValue(text)))
-        self.lbl_text.setText(" ".join(str(v) for v in self.math_exp))
+        self.lbl_text.setText(math_exp)
 
         if text != "inf":
             self.stack[-1] = eval(text)
@@ -86,7 +95,7 @@ class Form(QWidget, form_class):
             self.stack[-1] = 0
 
         if "." not in str(self.stack[-1]):
-            self.display(str(self.stack[-1]) + ".")
+            self.display(str(self.stack[-1]) + ".", " ".join(str(v) for v in self.math_exp))
 
     def getDisplayValue(self):
         return float_to_int(eval(self.lbl_result.text().replace(",", "")))
@@ -104,7 +113,7 @@ class Form(QWidget, form_class):
         self.current_op = op_func
         self.math_exp = [self.stack[0], self.sender().text()]
 
-        self.display(str(self.stack[-1]))
+        self.display(str(self.stack[-1]), " ".join(str(v) for v in self.math_exp))
 
         if len(self.stack) < 2:
             self.stack.append(0)
@@ -126,15 +135,60 @@ class Form(QWidget, form_class):
                 self.buttonStatSwitch(False)
                 print(f"Error: {e}")
 
-        self.display(str(self.stack[-1]))
+        self.display(str(self.stack[-1]), " ".join(str(v) for v in self.math_exp))
 
         self.math_exp.append(self.stack[-1])
         self.history.append(self.math_exp.copy())
         # print(f"3 Recent Records History: {self.history[::-1][:3]}")
 
+        self.add_to_listWidget(self.history[-1])
+
         self.inputOK = False
         self.current_op = None
         self.math_exp.clear()
+
+    def add_to_listWidget(self, lst):
+        # 계산 수식 listWidget 에 넣기
+        self.btn_remove.setEnabled(True)  # 휴지통 활성화
+        self.btn_save.setEnabled(True)  # 저장 활성화
+
+        items = list()
+
+        # 기존 모든 item 을 리스트에 담기
+        if self.listWidget.count():
+            items = [self.listWidget.item(i) for i in range(self.listWidget.count())]
+            """
+            items: List QListWidgetItem object id 
+            """
+
+        text = " ".join(str(v) for v in lst[:-1])
+        self._add_item(f"{text}\n{lst[-1]}")
+
+        for item in items:
+            row = self.listWidget.row(item)
+            self.listWidget.takeItem(row)
+
+            self._add_item(item.text())
+
+    def _add_item(self, text):
+        item = QListWidgetItem(text)
+        item.setTextAlignment(Qt.AlignRight)
+        item.setFont(QtGui.QFont("나눔고딕", 13, QFont.Bold))
+        self.listWidget.addItem(item)
+
+    def read_item(self):
+        # 클릭한 item 값 가져오기
+        text = self.listWidget.currentItem().text()
+        math_exp, result = text.split("\n")
+
+        self.display(result.strip(), math_exp.strip())
+
+    def clear_history(self):
+        # 모든 기록 지우기
+        self.listWidget.clear()
+        self.history.clear()
+        self.btn_remove.setEnabled(False)
+        self.btn_save.setEnabled(False)
 
     def buttonStatSwitch(self, stat):
         # 예외 발생 시, 버튼 상태 변경
@@ -148,12 +202,13 @@ class Form(QWidget, form_class):
         # Backspace 버튼 처리
         lbl = self.lbl_result
         text = lbl.text().replace(",", "")
+        math_exp = " ".join(str(v) for v in self.math_exp)
 
         if self.inputOK:
             if len(lbl.text()) == 1:
-                self.display("0")
+                self.display("0", math_exp)
             else:
-                self.display(text[:-1])
+                self.display(text[:-1], math_exp)
         else:
             if text == "inf":
                 self.reset()
@@ -166,7 +221,7 @@ class Form(QWidget, form_class):
         if self.lbl_result.text() == "inf":
             self.reset()
 
-        self.display("0")
+        self.display("0", " ".join(str(v) for v in self.math_exp))
 
     def closeEvent(self, QCloseEvent):
         # 창 닫기
