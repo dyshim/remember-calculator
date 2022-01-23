@@ -1,41 +1,40 @@
-# PyQt Calculator
-<a href="https://www.python.org"><img
- src="https://img.shields.io/badge/PYTHON3+-3776AB?style=for-the-badge&logo=PYTHON&logoColor=white&link=https://www.python.org/"></a>
-<a href="https://www.anaconda.com"><img src="https://img.shields.io/badge/Anaconda-44A833?style=for-the-badge&logo=Anaconda&logoColor=white&link=https://www.anaconda.com/"></a>
+# Remember Calculator — 기록 저장 계산기
+The purpose of this project is to save the calculation records as a text file.
+The calculator app implemented in Python using PyQt5. The Ui was designed in Qt Designer.
 
 
-### Build a calculator using PyQt5 in Python.
-- 화면 UI
+<a href="https://www.python.org">
+<img src="https://img.shields.io/badge/Python3+-3776AB?style=flat&logo=PYTHON&logoColor=white&link=https://www.python.org/"></a>
+<a href="https://www.anaconda.com">
+<img src="https://img.shields.io/badge/Anaconda-44A833?style=flat&logo=Anaconda&logoColor=white&link=https://www.anaconda.com/"></a>
+<a href="https://qt-brandbook.webflow.io">
+<img src="https://img.shields.io/badge/Qt-41CD52?style=flat&logo=Qt&logoColor=white&link=https://qt-brandbook.webflow.io/"></a>
 
-① <img src="https://user-images.githubusercontent.com/69224744/147195303-32c93610-1383-43d3-b6ef-049bd447ec00.png" /> &nbsp;
-② <img src="https://user-images.githubusercontent.com/69224744/147196556-4cb33e8c-3ee0-494d-a297-cfb9adbf7ec5.png" />
+#### [실행 파일(.exe) 다운](https://drive.google.com/drive/folders/1vZghImyiCG-NkEmZGmCOKZh0WyjPHCXP?usp=sharing)
 
-- [실행 파일(.exe) 다운](https://drive.google.com/drive/folders/1vZghImyiCG-NkEmZGmCOKZh0WyjPHCXP?usp=sharing)
+## UI Design
+<img src="https://user-images.githubusercontent.com/69224744/150674209-dd08afc0-26e7-4b08-87c1-6faac8b4ad5e.gif" title="실행 결과" hspace="10"/>
 
-## Windows
+## Windows OS based
 ### Prerequisite
 - PyQt5
 - Qt Designer (Only for developers for editing layouts)
 
-
 ## Feature
-- 입력한 수식 상태를 화면에 출력
-- 입력 가능한 숫자의 자리수 제한 (소수점 포함 11자리)
-- 연산자가 입력 되면 Backspace 기능 제한
-- ZeroDivisionError 의 경우, 버튼 비활성화 기능 사용
-  - 활성화 된 버튼을 입력 하면 화면 ① 상태로 복구
+- 입력한 수식을 화면에 출력.
+- 최근 연산은 화면 오른쪽 상단에 누적 표시.
+  - 클릭 시, 해당 기록을 화면에 출력
+- 내보내기 기능으로 계산 기록을 텍스트 파일로 저장 (+22.01.23)
+<img src="https://user-images.githubusercontent.com/69224744/150676796-a830d690-76a9-4cc1-8473-369edd79cedf.gif" hspace="10"/>
 
-  ![calc-ui-3](https://user-images.githubusercontent.com/69224744/147274435-6f8ba74b-605c-4e3a-8dcf-cf6f299abe43.png)
-
-- 실수 연산 시, 결과 값이 .0으로 끝나면 정수로 출력하도록 구현
-
-  ![calc-ui-5](https://user-images.githubusercontent.com/69224744/147278879-d316b47b-c655-4957-9813-2ff2d09b9445.png)
-
+- 자리수 구분 단위 , 표시 (+22.01.14)
+- 실수 연산 시 .0으로 끝나면 정수로 출력
+- 입력 가능 숫자의 자리수를 제한 (소수점 포함 11자리)
+- 연산자 입력 시, Backspace 기능 제한
+- 예외 처리 시, 일부 버튼 비활성화 (ex. 0으로 나눈 경우)
+  - 활성화 된 버튼을 누르면 리셋
+  
 
 ## 개선 사항
 - 부동 소수점 입력 시, 지수 형태로 출력
 - 음수 입력 기능 필요
-
-
-
-
