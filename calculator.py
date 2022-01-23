@@ -224,13 +224,17 @@ class Form(QWidget, form_class):
         self.display("0", " ".join(str(v) for v in self.math_exp))
 
     def closeEvent(self, QCloseEvent):
-        # 창 닫기
-        ans = QMessageBox.question(self, '종료하기', '종료하시겠습니까?', QMessageBox.Yes | QMessageBox.No,
-                                   QMessageBox.Yes)
-        if ans == QMessageBox.Yes:
-            QCloseEvent.accept()
-        else:
-            QCloseEvent.ignore()
+        # 창 닫기 전, 저장 여부 확인
+        if self.btn_save.isEnabled():
+            ans = QMessageBox.question(self, '종료하기', '기록을 저장하시겠습니까?',
+                                       QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel,
+                                       QMessageBox.Yes)
+            if ans == QMessageBox.Yes:
+                export_history(self.history[::-1])   # 저장 후 종료
+            elif ans == QMessageBox.Cancel:
+                QCloseEvent.ignore()
+            else:
+                QCloseEvent.accept()
 
 
 if __name__ == "__main__":

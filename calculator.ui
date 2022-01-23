@@ -907,7 +907,7 @@
          </font>
         </property>
         <property name="toolTip">
-         <string>기록 내보내기</string>
+         <string>기록 저장하기</string>
         </property>
         <property name="text">
          <string>내보내기(&amp;S)</string>
