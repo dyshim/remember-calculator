@@ -177,9 +177,14 @@ class Form(QWidget, form_class):
         self.listWidget.addItem(item)
 
     def read_item(self):
-        # 클릭한 item 값 가져오기
+        # 이전 기록 가져오기
         text = self.listWidget.currentItem().text()
         math_exp, result = text.split("\n")
+
+        if result == "inf":
+            self.buttonStatSwitch(False)
+        else:
+            self.buttonStatSwitch(True)
 
         self.display(result.strip(), math_exp.strip())
 
