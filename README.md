@@ -10,7 +10,7 @@ The calculator app implemented in Python using PyQt5. The Ui was designed in Qt 
 <a href="https://qt-brandbook.webflow.io">
 <img src="https://img.shields.io/badge/Qt-41CD52?style=flat&logo=Qt&logoColor=white&link=https://qt-brandbook.webflow.io/"></a>
 
-#### [실행 파일(.exe) 다운](https://drive.google.com/drive/folders/1vZghImyiCG-NkEmZGmCOKZh0WyjPHCXP?usp=sharing)
+#### [실행 파일(.exe) 다운](https://vo.la/qMtA3)
 
 ## UI Design
 <img src="https://user-images.githubusercontent.com/69224744/150674209-dd08afc0-26e7-4b08-87c1-6faac8b4ad5e.gif" title="실행 결과" hspace="10"/>
