@@ -13,9 +13,9 @@ def export_history(hisData: list):
 
     if f_name[0]:
         path = f_name[0]
-
-        print(path, hisData)
         _save_to_path(path, hisData)
+    else:
+        return -1
 
 
 def _save_to_path(f_path, hisData, sep='\n'):
