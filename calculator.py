@@ -231,11 +231,12 @@ class Form(QWidget, form_class):
     def closeEvent(self, QCloseEvent):
         # 창 닫기 전, 저장 여부 확인
         if self.btn_save.isEnabled():
-            ans = QMessageBox.question(self, '종료하기', '기록을 저장하시겠습니까?',
+            ans = QMessageBox.question(self, '종료하기', '저장 후 종료하시겠습니까?',
                                        QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel,
                                        QMessageBox.Yes)
             if ans == QMessageBox.Yes:
-                export_history(self.history[::-1])   # 저장 후 종료
+                if export_history(self.history[::-1]) == -1:   # 내보내기 실패 시
+                    QCloseEvent.ignore()
             elif ans == QMessageBox.Cancel:
                 QCloseEvent.ignore()
             else:
