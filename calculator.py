@@ -5,7 +5,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import *
 from PyQt5 import uic, QtGui
-from mylib import float_to_int, export_history
+from mylib import float_to_int, save_to_path
 
 import operator
 
@@ -21,6 +21,7 @@ class Form(QWidget, form_class):
 
         self.reset()
         self.history = list()
+        self.saved_his = list()
 
     def initUI(self):
         # Setup numbers
@@ -44,7 +45,7 @@ class Form(QWidget, form_class):
         self.listWidget.itemSelectionChanged.connect(lambda: self.listWidget.currentItem().setSelected(False))
         self.listWidget.itemClicked.connect(self.read_item)
         self.btn_remove.pressed.connect(self.clear_history)
-        self.btn_save.clicked.connect(lambda: export_history(self.history[::-1]))
+        self.btn_save.clicked.connect(lambda: self.export_history(self.history[::-1]))
 
     def reset(self):
         # AC 버튼을 눌렀을 때
@@ -192,6 +193,7 @@ class Form(QWidget, form_class):
         # 모든 기록 지우기
         self.listWidget.clear()
         self.history.clear()
+        self.saved_his.clear()
         self.btn_remove.setEnabled(False)
         self.btn_save.setEnabled(False)
 
@@ -228,14 +230,24 @@ class Form(QWidget, form_class):
 
         self.display("0", " ".join(str(v) for v in self.math_exp))
 
+    def export_history(self, hisData: list):
+        f_name = QFileDialog.getSaveFileName(filter="텍스트 문서(*.txt)")
+
+        if f_name[0]:
+            path = f_name[0]
+            save_to_path(path, hisData)
+            self.saved_his = hisData
+        else:
+            return -1
+
     def closeEvent(self, QCloseEvent):
         # 창 닫기 전, 저장 여부 확인
-        if self.btn_save.isEnabled():
+        if self.history[::-1] != self.saved_his:
             ans = QMessageBox.question(self, '종료하기', '저장 후 종료하시겠습니까?',
                                        QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel,
                                        QMessageBox.Yes)
             if ans == QMessageBox.Yes:
-                if export_history(self.history[::-1]) == -1:   # 내보내기 실패 시
+                if self.export_history(self.history[::-1]) == -1:   # 내보내기 실패 시
                     QCloseEvent.ignore()
             elif ans == QMessageBox.Cancel:
                 QCloseEvent.ignore()
