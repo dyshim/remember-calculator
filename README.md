@@ -1,6 +1,5 @@
 # Remember Calculator — 기억 계산기
-The purpose of this project is to save the calculation records as a text file.
-The calculator app implemented in Python using PyQt5. The Ui was designed in Qt Designer.
+기본 연산 기능에 기록 저장 기능을 더한 기억 계산기입니다. 디자인은 윈도우10 기본 계산기를 참고했습니다.
 
 
 <a href="https://www.python.org">
